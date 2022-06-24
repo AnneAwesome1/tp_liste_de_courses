@@ -2,21 +2,35 @@
 
 require 'connexion.php';
 
-if (isset($_POST['name']) && isset($_POST['quantite'])) {
 
-     $q = "INSERT INTO `produit` (`id_produit`,`nom_produit`, `quantite_produit`) VALUES (:id_produit, :name, :quantite)";
 
-     $requete = $connexion->prepare($q);
 
-     $requete->bindValue('nom_produit', $_POST['name'], PDO::PARAM_STR);
+//________________________________Ajout de produits + Quantite dans la base de données________________________________________________________________
 
-     $requete->bindValue('quantite_produit', $_POST['produit_quantite'], PDO::PARAM_INT);
+
+// echo '<pre>';
+// var_dump($_POST);
+// echo '</pre>';
+
+if (isset($_POST['produit_name'])) { // bouton edit + champd produit + champ quantite 
+
+     // Mise à jour des champ input produit et quantite avec le botton edit.
+
+     $query = "INSERT INTO `produit`(`nom_produit`, `quantite_produit`) VALUES (:val2,:val3)";
+
+     $requete = $connexion->prepare($query);
+     // bindValue = Associe une valeur à un parametre dans une requete
+
+     $requete->bindValue('val2', $_POST['produit_name'], PDO::PARAM_STR); // STRING
+
+     $requete->bindValue('val3', $_POST['produit_quantite'], PDO::PARAM_INT); // INTEGER
 
      $result = $requete->execute();
 }
 
 
 
+// ______Bouton EDIT____MISE à JOUR DES PRODUITS ET DE LA QUANTITY DANS LA BASE DE DONNEES;__________________________
 
 
 
@@ -37,7 +51,7 @@ if (isset($_POST['id_produit_edit'])) { // bouton edit + champd produit + champ 
      $result = $requete->execute();
 }
 
-
+// _______________BOUTON DELETE_______dans la base de donnees_________________________________________________________
 
 if (isset($_POST['id_produit_delete'])) { // si o click sur le bouton delete
 
@@ -71,16 +85,15 @@ $produits = $requete->fetchAll(PDO::FETCH_ASSOC);
 <body>
      <div style="margin: 1%;">
           <h3>Liste de courses</h3>
-          <form onSubmit='' style="margin: 1%;">
+          <form method="POST" style="margin: 1%;">
                <div class="row">
                     <div class="col-sm-2">
-                         <input type="number" name="quantite" class="form-control">
+                         <input type="number" name="produit_quantite" class="form-control">
                     </div>
                     <div class="col-sm-5">
-                         <input type="text" name="name" class="form-control">
+                         <input type="text" name="produit_name" class="form-control">
                     </div>
                </div>
-               <input type="hidden" name="produit_add" value="" />
                <button type="submit" class="btn btn-primary" style="margin: 1%;"> Ajouter </button>
           </form>
 
